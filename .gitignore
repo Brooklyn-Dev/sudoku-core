@@ -1,0 +1,14 @@
+# Node.js dependencies
+node_modules/
+dist/
+coverage/
+.env
+
+# TypeScript build files
+*.js
+*.js.map
+*.d.ts
+
+# Editor settings
+.vscode/
+.DS_Store
