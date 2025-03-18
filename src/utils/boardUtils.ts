@@ -1,6 +1,6 @@
 import { SudokuBoardError } from "../errors/SudokuBoardError";
 import { ERROR_MESSAGES } from "../utils/constants";
-import { isValidCellIndex, isValidCellValue, isValidMove } from "./validators";
+import { isValidBoard, isValidCellIndex, isValidCellValue, isValidMove } from "./validators";
 
 /**
  * Extracts the initial (non-zero) cells from a Sudoku board.
@@ -79,21 +79,9 @@ export function isSolvedBoard(board: number[][]): boolean {
     return false;
 
   for (let row = 0; row < 9; row++)
-    for (let col = 0; col < 9; col++) {
-      const value = board[row][col];
-      if (value === 0) return false;
+    for (let col = 0; col < 9; col++) if (board[row][col] === 0) return false;
 
-      board[row][col] = 0;
-
-      if (!isValidMove(board, row, col, value)) {
-        board[row][col] = value;
-        return false;
-      }
-
-      board[row][col] = value;
-    }
-
-  return true;
+  return isValidBoard(board);
 }
 
 /**
@@ -125,7 +113,7 @@ export function validateCellIndex(row: number, col: number): void {
 }
 
 /**
- * Validates the structure of a Sudoku board and converts a 1D array input into a 2D array
+ * Validates the structure of a Sudoku board and converts a 1D array input into a 2D array.
  * @param {number[][] | number[]} board - The board to validate.
  * @returns {number[][]} A properly structured 9x9 board.
  * @throws {SudokuBoardError} If the structure is invalid.
@@ -157,4 +145,13 @@ export function validateBoardStructure(board: number[][] | number[]): number[][]
 export function validateBoardValues(board: number[][]): void {
   for (let row = 0; row < 9; row++)
     for (let col = 0; col < 9; col++) validateCellValue(board[row][col]);
+}
+
+/**
+ * Validates a board, checking it's in a legal state and doesn't violate any Sudoku rules.
+ * @param {number[][]} board - A 9x9 Sudoku board.
+ * @throws {SudokuBoardError} If the board is illegal.
+ */
+export function validateBoardLegality(board: number[][]): void {
+  if (!isValidBoard(board)) throw new SudokuBoardError(ERROR_MESSAGES.BOARD.ILLEGAL_BOARD);
 }

@@ -1,5 +1,10 @@
 import { isValidMove } from "../utils/validators";
-import { deepCopy2DArray } from "../utils/boardUtils";
+import {
+  deepCopy2DArray,
+  validateBoardLegality,
+  validateBoardStructure,
+  validateBoardValues,
+} from "../utils/boardUtils";
 
 class Solver {
   private board: number[][];
@@ -11,6 +16,10 @@ class Solver {
    * @param {number} [delay=100] - Wait time between visualised solving steps (ms).
    */
   constructor(board: number[][], delay: number = 100) {
+    validateBoardStructure(board);
+    validateBoardValues(board);
+    validateBoardLegality(board);
+
     this.board = deepCopy2DArray(board);
     this.delay = delay;
   }

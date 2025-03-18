@@ -3,6 +3,7 @@ import {
   createEmptyBoard,
   deepCopy2DArray,
   extractInitialCells,
+  validateBoardLegality,
   validateBoardStructure,
   validateBoardValues,
   validateCellIndex,
@@ -22,6 +23,7 @@ class Board {
     if (initialBoard) {
       const validatedBoard = validateBoardStructure(initialBoard);
       validateBoardValues(validatedBoard);
+      validateBoardLegality(validatedBoard);
       this.board = validatedBoard;
     } else {
       this.board = createEmptyBoard();
