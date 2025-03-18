@@ -1,4 +1,9 @@
-import { isValidCellValue, isValidCellIndex, isValidMove } from "../src/utils/validators";
+import {
+  isValidCellValue,
+  isValidCellIndex,
+  isValidMove,
+  isValidBoard,
+} from "../src/utils/validators";
 
 describe("Validators", () => {
   it("should validate correct cell values", () => {
@@ -30,5 +35,35 @@ describe("Validators", () => {
     const board = Array.from({ length: 9 }, () => Array(9).fill(0));
     board[0][1] = 5;
     expect(isValidMove(board, 0, 0, 5)).toBeFalsy();
+  });
+
+  it("should return true for a valid Sudoku board", () => {
+    const validBoard = [
+      [5, 3, 0, 0, 7, 0, 0, 0, 0],
+      [6, 0, 0, 1, 9, 5, 0, 0, 0],
+      [0, 9, 8, 0, 0, 0, 0, 6, 0],
+      [8, 0, 0, 0, 6, 0, 0, 0, 3],
+      [4, 0, 0, 8, 0, 3, 0, 0, 1],
+      [7, 0, 0, 0, 2, 0, 0, 0, 6],
+      [0, 6, 0, 0, 0, 0, 2, 8, 0],
+      [0, 0, 0, 4, 1, 9, 0, 0, 5],
+      [0, 0, 0, 0, 8, 0, 0, 7, 9],
+    ];
+    expect(isValidBoard(validBoard)).toBeTruthy();
+  });
+
+  it("should return false for an invalid Sudoku board", () => {
+    const invalidBoard = [
+      [5, 3, 3, 0, 7, 0, 0, 0, 0], // Duplicate 3
+      [6, 0, 0, 1, 9, 5, 0, 0, 0],
+      [0, 9, 8, 0, 0, 0, 0, 6, 0],
+      [8, 0, 0, 0, 6, 0, 0, 0, 3],
+      [4, 0, 0, 8, 0, 3, 0, 0, 1],
+      [7, 0, 0, 0, 2, 0, 0, 0, 6],
+      [0, 6, 0, 0, 0, 0, 2, 8, 0],
+      [0, 0, 0, 4, 1, 9, 0, 0, 5],
+      [0, 0, 0, 0, 8, 0, 0, 7, 9],
+    ];
+    expect(isValidBoard(invalidBoard)).toBeFalsy();
   });
 });
